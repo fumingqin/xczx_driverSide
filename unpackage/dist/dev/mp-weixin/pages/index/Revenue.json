@@ -1,8 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "histogram-chart": "/components/stan-ucharts/HistogramChart",
-    "line-chart": "/components/stan-ucharts/LineChart",
-    "mx-date-picker": "/components/mx-datepicker/mx-datepicker"
-  }
-}

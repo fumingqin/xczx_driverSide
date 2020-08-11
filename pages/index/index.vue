@@ -22,18 +22,18 @@
 		<!-- 五个模块 -->
 		<view class="bottomContent" style="width: 100%;">
 			<view style="display: flex;flex-direction: row;width: 700rpx;text-align: center;margin-top:50rpx;margin-left: 24rpx;">
-				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','客车')">
+				<!-- <view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','客车')">
 					<image class="tabItem-image" src="../../static/index/KC.png"></image>
 					<text class="tabItem-font">客车</text>
-				</view>
+				</view> -->
 				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','出租车')">
 					<image class="tabItem-image" src="../../static/index/WLYC.png"></image>
 					<text class="tabItem-font">出租车</text>
 				</view>
-				<view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','包车')">
+				<!-- <view class="tabItem" @click="setPlateNumber('../driver/bindCoachCode','包车')">
 					<image class="tabItem-image" src="../../static/index/BCFW.png"></image>
 					<text class="tabItem-font">包车</text>
-				</view>
+				</view> -->
 				<!-- <view class="tabItem" @click="setPlateNumber('','公交车')">
 					<image class="tabItem-image" src="../../static/index/GJCX.png"></image>
 					<text class="tabItem-font">公交车</text>

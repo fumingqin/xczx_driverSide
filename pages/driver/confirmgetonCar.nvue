@@ -371,9 +371,6 @@
 						that.showToast('网络连接失败');
 					}
 				})
-				
-				
-				
 			},
 			setConfirmgetonCar:function(){
 				//确认乘客上车

@@ -11,7 +11,7 @@
 				<text style="font-size:38rpx;font-family:Source Han Sans SC;font-weight:bold;color:rgba(44,45,45,1);">出租车司机</text>
 			</view>
 			<view @click="downwindCar" style="width: 30%;text-align: right;">
-				<text style="font-size:34rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(44,45,45,1);">顺风车</text>
+				<text style="font-size:34rpx;font-family:Source Han Sans SC;font-weight:400;color:rgba(44,45,45,1);"></text>
 			</view>
 		</view>
 
@@ -25,7 +25,7 @@
 				</button>
 			</view>
 		</view> -->
-		<view style="display: flex;width: 94%;background-color: #FFFFFF;border-radius: 20rpx;margin: 0 auto;">
+		<!-- <view style="display: flex;width: 94%;background-color: #FFFFFF;border-radius: 20rpx;margin: 0 auto;">
 			<view style="display: flex;justify-content: space-between;padding: 30rpx;width: 100%;">
 				<view @click="switchover(true)" style="width: 47%;display: flex;flex-direction: row;justify-content: center;">
 					<view style="display: inline-block;" :class="[buttonActive?'chooseBorder':'']">
@@ -38,7 +38,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- 出租车-今日接单量 -->
 		<view v-if="buttonActive" style="width: 94%;height: 105rpx; background-color: #FFFFFF;margin-left: 22rpx; border-radius:20rpx;margin-top: 30rpx;margin-bottom: 30rpx;">
@@ -149,7 +149,7 @@
 			</view>
 		</scroll-view>
 
-		<view style="width: 94%;margin-left: auto;margin-right: auto;">
+		<view style="width: 94%;margin-left: auto;margin-right: auto;margin-top: 50px;">
 			<button @click="isOpenButton" class="buttonActive">
 				<text class="buttonFont">{{buttonContent}}</text>
 			</button>
