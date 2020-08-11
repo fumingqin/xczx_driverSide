@@ -1,0 +1,18 @@
+
+page{
+	background-color: #F5F7F9;
+}
+.titleFont{
+	font-size:32rpx;
+	font-family:Source Han Sans SC;
+	font-weight:300;
+	color:#999999;
+}
+.contentFont{
+	font-size:38rpx;
+	font-family:Source Han Sans SC;
+	font-weight:400;
+	color:#2C2D2D;
+}
+
+

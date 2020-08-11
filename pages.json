@@ -1,0 +1,379 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{  //个人中心开始
+			"path": "pages/grzx/userLogin",  //登录
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/user",  //个人中心
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"fontSrc": "/static/grzx/jdticon.ttf",
+								"text": "\ue60f",
+								"fontSize": "24",
+								"color": "#303133",
+								"width": "46px",
+								"background": "rgba(0,0,0,0)",
+								"float": "left"
+							}
+							// {
+							// 	"fontSrc": "/static/grzx/jdticon.ttf",
+							// 	"text": "\ue744",
+							// 	"fontSize": "28",
+							// 	"color": "#303133",
+							// 	"background": "rgba(0,0,0,0)",
+							// 	"redDot": true
+							// },
+							// {
+							// 	"fontSrc": "/static/grzx/jdticon.ttf",
+							// 	"text": "\ue60d",
+							// 	"fontSize": "26",
+							// 	"color": "#303133",
+							// 	"float": "left",
+							// 	"background": "rgba(0,0,0,0)"
+							// }
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/grzx/set",  //设置
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/grzx/infoManage",  //信息登记	
+			"style": {
+				"navigationBarTitleText": "驾驶员信息",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/grzx/licenseManage",  //驾照登记
+			"style": {
+				"navigationBarTitleText": "驾照信息"
+			}
+		},
+		{
+			"path": "pages/grzx/aboutApp", //关于App
+			"style": {
+				"navigationBarTitleText": "关于App"
+			}
+		},
+		{  
+			"path": "pages/grzx/selectOperation",  //选择登陆还是注册
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage1", //注册
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage2",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/registerPage3",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/successPage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/grzx/complaint",
+			"style": {
+				"navigationBarTitleText": "投诉申诉"
+			}
+		},
+		//个人中心结束
+		{
+			"path": "pages/driver/taxiDriver",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/otherExpenses",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/driver/confirmgetonCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/driver/bindCoachCode",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/driver/bindCoachCode1",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/buyTicket",
+
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/CTKYDriver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/bcDriver",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/specialLineCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/otherExpenses",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BCDriver/orderComplete",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/CTKYDriver/chooseSite",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/checkTicket",
+			"style": {
+				"enablePullDownRefresh":true,
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/CTKYDriver/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/index/Order",
+			"style": {
+				"enablePullDownRefresh":true,
+				"navigationBarTitleText": "订单",
+				"navigationBarBackgroundColor": "#F6F8FE"
+			}
+		}, {
+			"path": "pages/BCDriver/customizedCar",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}
+	    ,{
+            "path" : "pages/BCDriver/openPopup",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/Map/MapIndex",
+            "style" : {
+				"navigationBarTitleText": "hello",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "确定",
+							"type": "transparent",
+							"fontSize": "16px",
+							"width":"77px"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/Map/MapSearch",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/Revenue",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/driver/orderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/driver/remindSuccess",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/BCDriver/dzOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/BCDriver/zxOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+		    "path" : "pages/CTKYDriver/kyOrderDetail",
+		    "style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/CTKYDriver/selectOrder",
+            "style" : {
+				"enablePullDownRefresh":true,
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/ZXC/CzcPrivate",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+			"path" : "pages/ZXC/orderDetail",
+			"style" : {
+				"navigationStyle": "custom"
+			}
+		}
+        ,{
+            "path" : "pages/grzx/gz_complaintList",
+            "style" : {
+				"navigationBarTitleText":"投诉列表"
+			}
+        }
+        ,{
+            "path" : "pages/grzx/gz_complaintText",
+            "style" : {
+				"navigationBarTitleText":"申诉"
+			}
+        }
+		,{
+		    "path" : "pages/downwindCar/addDownwindOrder",
+		    "style" : {
+				"navigationBarTitleText":"发布顺风车"
+			}
+		}
+		,{
+		    "path" : "pages/downwindCar/downwindCarDriver",
+		    "style" : {
+				"navigationStyle":"custom"
+			}
+		}
+		,{
+		    "path" : "pages/downwindCar/orderDetail",
+		    "style" : {
+				"navigationStyle":"custom"
+			}
+		}
+        ,{
+            "path" : "pages/CustomizedBus/index",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        }
+        ,{
+            "path" : "pages/CustomizedBus/checkTicket",
+            "style" : {
+				"navigationStyle": "custom"
+			}
+        },
+		{
+		    "path" : "pages/grzx/gz_complaintContent",
+		    "style" : {}
+		}
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#2C2D2D",
+		"selectedColor": "#FC4646",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "black",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/index/index.png",
+				"selectedIconPath": "static/index/index1.png",
+				"text": "首页"
+			},
+			{
+
+				"pagePath": "pages/index/Order",
+				"iconPath": "static/index/order.png",
+				"selectedIconPath": "static/index/order1.png",
+				"text": "订单"
+			},
+			{
+				"pagePath": "pages/index/Revenue",
+				"iconPath": "static/index/revenue.png",
+				"selectedIconPath": "static/index/revenue1.png",
+				"text": "营收"
+			},
+			{
+				"pagePath": "pages/grzx/user",
+				"iconPath": "static/index/user.png",
+				"selectedIconPath": "static/index/user1.png",
+				"text": "我的"
+			}
+		]
+	}
+}

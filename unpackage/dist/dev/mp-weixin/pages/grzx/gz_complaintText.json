@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "申诉",
+  "usingComponents": {
+    "uni-steps": "/components/uni-steps/uni-steps"
+  }
+}

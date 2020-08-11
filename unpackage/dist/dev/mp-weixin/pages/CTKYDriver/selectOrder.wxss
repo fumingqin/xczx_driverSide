@@ -1,0 +1,10 @@
+
+page {
+	background-color: #F5F9FC;
+}
+.status_bar {
+	height: 25px;
+	width: 100%;
+	box-sizing: content-box;
+}
+

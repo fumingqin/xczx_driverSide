@@ -1,0 +1,239 @@
+<template>
+	<view>
+		<map :show-location="true" :scale="scale" class="map" :style="{height:mapHeight}"></map>
+		<uni-popup ref='chooseStart' :animation='true' type='center' :maskClick='false'>
+			<!--修改上车点-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择上车点</text>
+					<uni-icons @click="back" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose">
+						<text class="popupButtonChooseFont">点击修改上车点</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref='chooseEnd' :animation='true' type='center' :maskClick='false'>
+			<!--修改目的地-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择目的地</text>
+					<uni-icons @click="back" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose">
+						<text class="popupButtonChooseFont">点击修改目的地</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref='chooseReturn' :animation='true' type='center' :maskClick='false'>
+			<!--修改返程点-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择返程点</text>
+					<uni-icons @click="back" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose">
+						<text class="popupButtonChooseFont">点击修改返程点</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref='chooseNext' :animation='true' type='center' :maskClick='false'>
+			<!--修改下一站-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择下一站</text>
+					<uni-icons @click="cancle()" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose">
+						<text class="popupButtonChooseFont">点击修改下一站</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
+		<uni-popup ref="buttomPopup" :animation='true' type="center" :maskClick='false'>
+			<view>
+				<view>
+					<button @click="comeHome" style="width: 650rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 12rpx; border-radius:20rpx;">
+						<text style="color: #FFFFFF;">行程返回</text>
+					</button>
+				</view>
+				<view>
+					<button @click="toNext" style="width: 650rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 12rpx; border-radius:20rpx; margin-top: 72rpx;">
+						<text style="color: #FFFFFF;">前往下一站目的地</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+		
+	</view>
+</template>
+
+<script>
+	import uniPopup from "@/components/uni-popup/uni-popup.vue";
+	export default {
+		components: {
+			uniPopup
+		},
+		data() {
+			return {
+				scale: 14,
+				mapHeight:''
+			}
+		},
+		onLoad(option) {
+			let that = this;
+			uni.getSystemInfo({
+				//设置地图高度为可使用的高度
+				success: function(res) {
+					that.mapHeight = res.windowHeight + 'px';
+					that.viewHeight = (res.windowHeight * 0.4) + 'px'
+				}
+			});
+		},
+		onReady() {
+			let that = this;
+			let name = 'buttomPopup';
+			switch (name) {
+				case 'chooseStart':
+					that.open('chooseStart');
+					break;
+				case 'chooseEnd':
+					that.open('chooseEnd');
+					break;
+				case 'chooseReturn':
+					that.open('chooseReturn');
+					break;
+				case 'chooseNext':
+					that.open('chooseNext');
+					break;
+				case 'buttomPopup':
+					that.open('buttomPopup');
+					break;
+				default:
+					break;
+					
+			}
+		},
+		methods: {
+			open: function(name) {
+				let that = this;
+				that.$refs[name].open();
+			},
+			close: function(name) {
+				let that = this;
+				that.$refs[name].close();
+			},
+			toNext:function(){
+				let that = this;
+				that.close('buttomPopup');
+				that.open('chooseNext');
+			},
+			back:function(){
+				let that = this;
+				uni.navigateBack({
+					
+				})
+			},
+			cancle:function(){
+				//请选择上车点的X
+				let that = this;
+				that.close('chooseNext');
+				that.open('buttomPopup');
+			},
+			comeHome:function(){
+				//行程返回
+				
+			}
+		}
+	}
+</script>
+<style>
+	.map {
+		width: 750rpx;
+	}
+	
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+</style>

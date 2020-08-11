@@ -1,0 +1,270 @@
+<template>
+	<view>
+		<map id="map1" ref="map1" class="map" :style="{height:mapHeight}" :scale="scale" :longitude="longitude" :latitude="latitude"
+		 :polyline="polyline" :markers="markers" :show-location="true">
+		</map>
+		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
+		<view style="position: fixed;bottom: 50rpx; ">
+			<!-- <view style="display: flex;flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			</view> -->
+			<!-- 行程信息 -->
+			<view style="width: 698rpx;height: 80rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 16rpx; padding: 20rpx;">
+			<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 16rpx;">已完成</text>
+			</view>
+			<view style="width: 698rpx;height: 159rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 16rpx;">
+				<view>
+					<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:500;color:#333333;line-height:36rpx; margin-top: 32rpx; margin-left: 36rpx;">司机信息</text>
+				</view>
+				<view style="margin-top: 20rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:104rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">姓名：</text>
+					<text style="width:168rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">张三丰</text>
+					<text style="width:104rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">驾龄：</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">6年</text>
+				</view>
+			</view>
+			<view style="width: 698rpx;height: 250rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;margin-top: 16rpx;">
+				<view>
+					<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:500;color:#333333;line-height:36rpx; margin-top: 32rpx; margin-left: 36rpx;">班次信息</text>
+				</view>
+				<view style="margin-top: 24rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:104rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">路线：</text>
+					<text style="height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">泉州客运中心站西门站 —— 泉州晋江国际机场站</text>
+				</view>
+				<view style="margin-top: 46rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:104rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">里程：</text>
+					<text style="width:168rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">53km</text>
+					<text style="width:104rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">时长：</text>
+					<text style="height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">2.5:00:00</text>
+				</view>
+			</view>
+			<view style="width: 698rpx;height: 294rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;margin-top: 16rpx;">
+				<view>
+					<text style="height:40rpx;font-size:36rpx;font-family:Source Han Sans SC;font-weight:500;color:#333333;line-height:36rpx; margin-top: 32rpx; margin-left: 36rpx;">检票信息</text>
+				</view>
+				<view style="margin-top: 24rpx;margin-left: 38rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+					<text style="font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已检人数：7人</text>
+					<view style="flex-direction: row;">
+						<text style="font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; color: #19A0FF;padding-right: 8rpx;">查看</text>
+						<uni-icons type="arrowright" size="18"></uni-icons>
+					</view>
+				</view>
+				<view style="margin-top: 24rpx;margin-left: 38rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+					<text style="font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">未检人数：1人</text>
+					<view style="flex-direction: row;">
+						<uni-icons type="arrowright" size="18"></uni-icons>
+					</view>
+				</view>
+				<view style="margin-top: 24rpx;margin-left: 38rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+					<text style="font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">过站未上：1人</text>
+					<view style="flex-direction: row;">
+						<uni-icons type="arrowright" size="18"></uni-icons>
+					</view>
+				</view>
+			</view>
+		</view>
+
+
+	</view>
+</template>
+
+<script>
+	import taxi from '../../common/Czc.js';
+	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	export default {
+		components: {
+			uniIcons,
+		},
+		data() {
+			return {
+				scale: 14,
+				longitude: "118.600608", //地图中心点经度
+				latitude: "24.889217", //地图中心点纬度
+				points: [],
+				polyline: [],
+				markers: [],
+				mapHeight: '',
+				viewHeight: '',
+				resultData: {},
+				status: 0,
+				directionInterval: '',
+				AddressArr: [],
+			}
+		},
+		onLoad() {
+			var that = this;
+			that.setMarker(1, 118.600608, 24.889217, '../../static/driver/Start.png');
+			that.setMarker(2, 118.613688, 24.912702, '../../static/driver/End.png');
+			that.getDirectionDriving(that.longitude + ',' + that.latitude, '118.613688,24.912702');
+			uni.getSystemInfo({
+				//设置地图高度为可使用的高度
+				success: function(res) {
+					that.mapHeight = res.windowHeight + 'px';
+					that.viewHeight = (res.windowHeight * 0.4) + 'px'
+				}
+			});
+			that.getOrderDetail();
+		},
+		onShow() {
+			var that = this;
+			uni.getStorage({
+				key: "AddressData",
+				success: function(res) {
+					//console.log(res);
+					that.startPoint = res.data.addressName;
+					that.EndPoint = res.data.addressName;
+					that.BackPoint = res.data.addressName;
+					that.NextPoint = res.data.addressName;
+					that.AddressArr = res.date;
+				}
+			})
+		},
+		methods: {
+			getOrderDetail: function() {
+				let that = this;
+				that.status = 0;
+
+				// //刚接单
+				// if(that.status == 0){
+				// 	Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+
+				// }
+			},
+			//确认乘客上车
+			remindPayment() {
+				uni.redirectTo({
+					url:'/pages/driver/remindSuccess',
+				})
+			},
+			back: function() {
+				var that = this;
+				uni.navigateBack({});
+			},
+			setMarker: function(id, lon, lat, iconPath) {
+				var width = 20;
+				var height = 20;
+				//描绘点的方法
+				var that = this;
+				var marker = new Object();
+				//画终点经纬度
+				marker = {
+					id: id,
+					latitude: lat,
+					longitude: lon,
+					iconPath: iconPath,
+					width: width,
+					height: height
+				};
+				that.markers.push(marker);
+			},
+			getDirectionDriving: function(startLonLat, endLonLat) {
+				//调用高德api取得路径规划并绘制线路 
+				var that = this;
+				uni.request({
+					url: taxi.InterfaceAddress[0],
+					data: {
+						startLonLat: startLonLat,
+						endLonLat: endLonLat,
+					},
+					method: "GET",
+					success: function(res) {
+						//日后会加入定时，此处需清空
+						that.points = [];
+						that.polyline = [];
+
+						var polylineArr = [];
+						var points = [];
+
+						polylineArr = res.data.Polyline;
+
+						for (var i = 0; i < polylineArr.length; i++) {
+							var arr = polylineArr[i].split(';');
+							for (var j = 0; j < arr.length; j++) {
+								points.push(arr[j]);
+							}
+						}
+						//根据文件建设对象经纬度数组
+						for (var i = 0; i < points.length; i++) {
+							var arr = points[i].split(',');
+							var obj = {
+								longitude: arr[0],
+								latitude: arr[1]
+							}
+							that.points.push(obj);
+						}
+						var obj = {
+							points: that.points,
+							color: "#4BDD25",
+							arrowLine: true,
+							width: 5
+						};
+						that.polyline.push(obj);
+					},
+					fail: function(res) {
+						//console.log(res);
+					}
+				});
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.map {
+		width: 750rpx;
+	}
+
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+</style>

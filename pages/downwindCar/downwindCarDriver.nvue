@@ -1,0 +1,711 @@
+<template>
+	<view>
+		<map id="map1" ref="map1" class="map" :style="{height:mapHeight}" :scale="scale" :longitude="longitude" :latitude="latitude"
+		 :polyline="polyline" :markers="markers" :show-location="true">
+		</map>
+		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
+		<view v-if="state == 2" style="position: fixed;bottom: 220rpx; ">
+			<view style="flex-direction: row;justify-content: space-between;align-items: center;">
+				<view style="flex-direction: row;">
+					<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+					<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+				</view>
+			</view>
+			<!-- 行程信息 -->
+			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
+				<!-- <view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{formatEstimateDistance(estimateDistance)}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">预计时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{formatEstimateTime(estimateTime)}}</text>
+				</view> -->
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">等待时长:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{waitTime}}</text>
+				</view>
+				<view style="margin-top: 20rpx;margin-left: 36rpx;display: flex;flex-direction: row;">
+					<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">上车点:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{startAddress}}</text>
+				</view>
+			</view>
+			<!-- 联系电话 -->
+			<view style="width: 698rpx;height: 105rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; padding: 34rpx;display: flex;flex-direction: row;margin-top: 20rpx;">
+				<view>
+					<text style="width:140rpx;height:36rpx;font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(51,51,51,1);line-height:36rpx; margin-left: 10rpx;">乘客电话:</text>
+				</view>
+				<view>
+					<text style="width:200rpx;height:36rpx;font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(51,51,51,1);line-height:36rpx;">{{passengersPhone}}</text>
+				</view>
+				<image style="width: 60rpx;height: 60rpx; left: 220rpx; top: -12rpx;" src="../../static/driver/phone.png" @click="call"></image>
+			</view>
+			<view>
+				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
+				 @longpress="confirmgetonCar">
+					<text style="color: #FFFFFF;">长按确认乘客已上车</text>
+				</button>
+			</view>
+		</view>
+		<view v-if="state == 4" style="position: fixed;bottom: 220rpx; ">
+			<view style="flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image src="../../static/driver/message.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="sendMessage"></image>
+			</view>
+			<!-- 行程信息 -->
+			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;padding-bottom: 20rpx;">
+				<!-- <view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{formatEstimateDistance(estimateDistance)}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">预计时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{formatEstimateTime(estimateTime)}}</text>
+				</view> -->
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">下车点:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{endAddress}}</text>
+				</view>
+			</view>
+			<view style="width: 698rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;padding-bottom: 30rpx;">
+				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">剩余里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{distance}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;margin-left: 40rpx;">已驶时长:</text> 
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyTime}}</text>
+				</view>
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">总费用:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{factPayPrice}}元</text>
+				</view>
+			</view>
+			<view>
+				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
+				 @longpress="confirmGetToDestination">
+					<text style="color: #FFFFFF;">长按确认到达目的地</text>
+				</button>
+			</view>
+		</view>
+
+		<uni-popup ref='callPolice' :animation='true' type='center' :maskClick='false'>
+			<!--一键报警-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">一键报警</text>
+					<uni-icons @click="cancle" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<picker @change='pickerChange' mode="selector" :value="pickerValue" :range='callPoliceArr' style="align-items: center;">
+						<text class="popupTitleFont" style="text-align: center;">{{alarmReason}}</text>
+					</picker>
+					<textarea style="margin-top: 20rpx;" name='alarmRemark' v-model="alarmRemark" placeholder="备注,可不填"></textarea>
+					<button @click="sendCall" class="popupButtonOk">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+	</view>
+</template>
+
+<script>
+	import $downwindCar from '@/common/downwindCar.js';
+	import $taxi from '../../common/Czc.js'
+	import $home from '../../common/Home.js'
+	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import Map from '../../common/my-openMap/openMap.js';
+	import uniPopup from "@/components/uni-popup/uni-popup.vue"
+	export default {
+		components: {
+			uniIcons,
+			uniPopup
+		},
+		data() {
+			return {
+				scale: 14,
+				longitude: "", //地图中心点经度
+				latitude: "", //地图中心点纬度
+				points: [],
+				polyline: [],
+				markers: [],
+				mapHeight: '',
+				viewHeight: '',
+				directionInterval: 0,
+				orderInterval: 0,
+				waitTimeInterval:0,
+				callPoliceArr: [
+					'车辆损坏',
+					'身体不适'
+				],
+				alarmReason: '请选择报警原因',//报警原因
+				pickerValue: 0,
+				alarmRemark: '',//报警备注
+				driverId: '',
+
+				orderNumber: '', //订单编号
+				state: 0,
+				startLon: '',
+				startLat: '',
+				startAddress: '',
+				endLon: '',
+				endLat: '',
+				endAddress: '',
+				orderType: '',
+				passengersPhone: '', 
+				vehicleType: '',
+				appointmentTime: '', //预约时间
+				estimatePrice: '', //预计价格
+				estimateDistance: '', //预计里程
+				estimateTime: '', //预计时长
+				alreadyTime: '0分钟', //已驶时长
+				alreadyMileage: '', //已驶里程
+				waitTime: '0分钟', //等待时长
+				initialMin:'',
+				factPayPrice: '', //总价
+				setoutTime:'',//出发去接旅客的时间
+				runTime:'',//开始执行的时间
+				
+				distance:'',//剩余里程
+				userInfo:null
+			}
+		},
+		onLoad(option) {
+			var that = this;
+			that.orderNumber = option.orderNumber;
+			var userInfo = uni.getStorageSync('userInfo') || '';
+			if (userInfo) {
+				that.userInfo = userInfo;
+				that.driverId = userInfo.driverId;
+			}
+			uni.getSystemInfo({
+				//设置地图高度为可使用的高度
+				success: function(res) {
+					that.mapHeight = res.windowHeight + 'px';
+					that.viewHeight = (res.windowHeight * 0.4) + 'px'
+				}
+			});
+			that.setOrderStatus();
+			that.getMyLocation();
+		},
+		onUnload() {
+			let that = this;
+			clearInterval(that.orderInterval);
+			clearInterval(that.waitTimeInterval);
+			clearInterval(that.directionInterval);
+		},
+		methods: {
+			getMyLocation:function(){
+				let that = this;
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.longitude = res.longitude;
+						that.latitude = res.latitude;
+					}
+				})
+			},
+			//本页面统一调用此方法
+			showToast:function(title,icon='none'){
+				uni.showToast({
+					title:title,
+					icon:icon
+				});
+			},
+			
+			getOrder: function() {
+				let that = this;
+				return new Promise((resolve, reject) => {
+					uni.request({
+						url: $downwindCar.Interface.GetHitchhikerOrderByOrderNumber_Driver.value,
+						method: $downwindCar.Interface.GetHitchhikerOrderByOrderNumber_Driver.method,
+						data: {
+							Ordernumber: that.orderNumber,
+							DriverId:that.driverId 
+						},
+						success: function(res) {
+							let data = res.data.data[0];
+							if (res.data.status) {
+								that.startLon = data.StartLon;
+								that.startLat = data.StartLat;
+								that.startAddress = data.StartAddress;
+								that.endLon = data.EndLon;
+								that.endLat = data.EndLat;
+								that.endAddress = data.EndAddress;
+								that.state = data.State;
+								that.orderType = data.OrderType;
+								that.passengersPhone = data.PassengersPhone;
+								that.vehicleType = data.VehicleType;
+								that.appointmentTime = data.AppointmentTime;
+								that.estimatePrice = data.EstimatePrice;
+								that.estimateDistance = data.EstimateDistance;
+								that.estimateTime = data.EstimateTime;
+								that.factPayPrice = data.FactPayPrice;
+								that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
+								//console.log(data)
+								that.setoutTime = data.SetOutTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
+								resolve(res);
+							} else {
+								that.showToast(res.data.msg);
+							}
+						},
+						fail: function(res) {
+							reject(res);
+							//console.log(res);
+							that.showToast('网络连接失败');
+						}
+					});
+				});
+			},
+
+
+			//订单查询方法，第一次进入时调用。
+			setOrderStatus: function() {
+				let that = this;
+				uni.showLoading({
+					mask:true
+				})
+				that.getOrder().then(res => {
+					console.log(res);
+					uni.hideLoading();
+					var data = res.data.data[0];
+					if (res.data.status) {
+						that.markers = [];
+						that.setMarker(1, that.startLon, that.startLat, '../../static/driver/Start.png');
+						that.setMarker(2, that.endLon, that.endLat, '../../static/driver/End.png');
+						if (that.state == 0) {
+							//等待接单
+
+						} else if (that.state == 1) {
+							//司机已接单
+							that.realGetOrderDetail();
+						} else if (that.state == 2) {
+							//司机已出发 
+							Map.openMap(that.startLat, that.startLon, that.startAddress, 'gcj02');
+							that.realGetOrderDetail();
+							//规划司机到出发地路程
+							that.setToStart();
+							that.mathWaitTime(new Date(that.setoutTime)); 
+						} else if (that.state == 3) {
+							//司机已到出发地
+							//预留
+						} else if (that.state == 4) {
+							//订单执行中（接到旅客）
+							that.setConfirmgetonCar();
+						} else if (that.state == 5) {
+							//待支付
+
+						} else if (that.state == 6) {
+							//支付完成
+
+						} else if (that.state == 7) {
+							//司机取消订单
+
+						} else if (that.state == 8) {
+							//乘客取消订单
+
+						} else if (that.state == 9) {
+							//支付失败
+							
+						}
+					}
+				}).catch(rej =>{
+					uni.hideLoading(); 
+				}) ;
+			},
+			realGetOrderDetail: function() {
+				//循环查找订单数据
+				let that = this;
+				if( that.orderInterval == 0){
+					that.orderInterval = setInterval(function() {
+						that.getOrder().then(res =>{
+							if (that.state == 8) {
+								clearInterval(that.orderInterval);
+								that.showToast('用户已取消订单');
+								setTimeout(function(){
+									uni.redirectTo({
+										url:'../driver/taxiDriver'
+									});
+								},1500);
+							}
+						});
+					}, 10000);
+				}
+			},
+			setToStart:function(){
+				let that = this;
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.getDirectionDriving(res.longitude + ',' + res.latitude,that.startLon + ',' + that.startLat);
+					}
+				});
+			},
+			
+			confirmgetonCar: function() { //长按确认乘客上车
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:$downwindCar.Interface.RunHitchhikerOrder_Driver.value,
+					method:$downwindCar.Interface.RunHitchhikerOrder_Driver.method,
+					data:{
+						OrderNumber:that.orderNumber
+					},
+					success:function(res){
+						uni.hideLoading();
+						let data = res.data;
+						that.runTime = data.RunTime.replace('T', ' ').replace(/-/g,'/').substring(0,19);
+						console.log(that.runTime);
+						that.setConfirmgetonCar();
+						that.state = 4;
+						Map.openMap(that.endLat, that.endLon, that.endAddress, 'gcj02');
+						
+					},
+					fail:function(res){
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				})
+				
+				
+				
+			},
+			setConfirmgetonCar:function(){
+				//确认乘客上车
+				let that = this;
+				clearInterval(that.orderInterval);
+				that.orderInterval = 0;
+				that.mathWaitTime(new Date(that.runTime));
+				that.polyline = []; 
+				uni.getLocation({
+					type:'gcj02',
+					success:function(res){
+						that.getDirectionDriving(res.longitude + ',' + res.latitude,that.endLon + ',' + that.endLat);
+					}
+				});
+				that.directionInterval = setInterval(function() { //获取司机的实时位置并规划到终点的路线
+					that.polyline = [];
+					uni.getLocation({
+						type: 'gcj02',
+						success: function(res) {
+							that.longitude = res.longitude;
+							that.latitude = res.latitude;
+							that.getDirectionDriving(res.longitude + ',' + res.latitude,that.endLon + ',' + that.endLat);
+						} 
+					})
+				}, 10000);
+			},
+			confirmGetToDestination: function() {
+				//长按确认到达目的地
+				let that = this;
+				uni.showLoading({
+					mask:true
+				});
+				uni.request({
+					url:$downwindCar.Interface.FinishSF_HitchhikerOrder_Driver.value,
+					method:$downwindCar.Interface.FinishSF_HitchhikerOrder_Driver.method,
+					data:{
+						OrderNumber:that.orderNumber
+					},
+					success:function(res){
+						uni.hideLoading();
+						if(res.data.status){
+							//取消由 setInterval 设置的定时器
+							clearInterval(that.directionInterval);
+							getApp().globalData.orderNumber = 0;
+							uni.redirectTo({
+								url: '/pages/driver/orderComplete',
+							})
+						} else {
+							that.showToast(res.data.msg);
+						}
+					},
+					fail:function(res){
+						uni.hideLoading();
+						console.log(res);
+						that.showToast('网络连接失败');
+					}
+				})
+				
+				
+			},
+			call: function() {
+				//呼叫乘客
+				let that = this;
+				uni.makePhoneCall({
+					phoneNumber: that.passengersPhone
+				});
+			},
+			sendMessage:function(){
+				let that = this;
+				var msg = plus.messaging.createMessage(plus.messaging.TYPE_SMS);
+				msg.to=[that.passengersPhone];
+				msg.body = '你好，我是您的顺风车司机' + that.userInfo.userName.substring(0,1) + '师傅，';
+				plus.messaging.sendMessage(msg);
+			},
+			
+			//picker相关
+			callPolice: function() {
+				let that = this;
+				that.$refs.callPolice.open();
+			},
+			cancle: function() {
+				let that = this;
+				that.$refs.callPolice.close();
+			},
+			pickerChange: function(e) {
+				let that = this;
+				that.pickerValue = e.detail.value;
+				that.alarmReason = that.callPoliceArr[e.detail.value];
+			},
+			sendCall: function() {
+				let that = this;
+				if (that.alarmReason === '请选择报警原因') {
+					that.showToast('请选择报警原因');
+					return;
+				}
+				new Promise((resolve, rejected) => {
+					uni.getLocation({
+						type: 'gcj02',
+						geocode: true,
+						success: function(res) {
+							console.log(res);
+							resolve(res);
+						},
+						fail: function(rej) {
+							rejected(rej);
+						}
+					});
+				}).then(resolve => {
+					uni.request({
+						url: $home.Interface.addDriverOneTouchAlarm.value,
+						method: $home.Interface.addDriverOneTouchAlarm.method,
+						data: {
+							orderNumber: that.orderNumber,
+							lon: resolve.longitude,
+							lat: resolve.latitude,
+							address: that.packAddress(resolve.address), 
+							alarmReason: that.alarmReason,
+							driverNumber: that.driverId,
+							alarmRemark: that.alarmRemark //报警备注
+						},
+						success: function(res) {
+							console.log(res);
+							if (res.data.status) {
+								uni.showToast({
+									title: '报警成功',
+									icon: 'none',
+									success: function() {
+										that.cancle();
+									}
+								});
+							} else {
+								that.showToast(res.data.msg);
+							}
+						},
+						fail: function(res) {
+							that.showToast('网络连接中断');
+							console.log(res);
+						}
+					})
+				});
+			},
+
+			back: function() {
+				var that = this;
+				uni.navigateBack({});
+			},
+			cancleOrder:function(){
+				let that = this;
+				uni.request({
+					url:$downwindCar.Interface.CancelSpecialLineOrderByOrderNum_Driver.value,
+					method:$downwindCar.Interface.CancelSpecialLineOrderByOrderNum_Driver.method,
+					data:{
+						OrderNumber:that.orderNumber
+					},
+					success:function(res){
+						console.log(res);
+						if(res.data.status){
+							that.showToast('取消成功');
+							setTimeout(function(){
+								uni.redirectTo({
+									url:'../driver/taxiDriver'
+								});
+							},1500);
+						} else {
+							that.showToast(res.data.msg);
+							console.log(res);
+						}
+					},
+					fail:function(res){
+						that.showToast('网络连接失败');
+						console.log(res);
+					}
+				});
+			},
+			
+			setMarker: function(id, lon, lat, iconPath) {
+				var width = 20;
+				var height = 20;
+				//描绘点的方法
+				var that = this;
+				var marker = new Object();
+				//画终点经纬度
+				marker = {
+					id: id,
+					latitude: lat,
+					longitude: lon,
+					iconPath: iconPath,
+					width: width,
+					height: height
+				};
+				that.markers.push(marker);
+			},
+
+
+			getDirectionDriving: function(startLonLat, endLonLat) {
+				//调用高德api取得路径规划并绘制线路 
+				var that = this;
+				uni.request({
+					url: $taxi.InterfaceAddress[0],
+					data: {
+						startLonLat: startLonLat,
+						endLonLat: endLonLat,
+					},
+					method: "GET",
+					success: function(res) {
+						//日后会加入定时，此处需清空
+						that.points = [];
+						that.polyline = [];
+
+						var polylineArr = [];
+						var points = [];
+					    that.distance =  (parseInt(res.data.Distance) / 1000).toFixed(2) + '公里';
+						polylineArr = res.data.Polyline;
+
+						for (var i = 0; i < polylineArr.length; i++) {
+							var arr = polylineArr[i].split(';');
+							for (var j = 0; j < arr.length; j++) {
+								points.push(arr[j]);
+							}
+						}
+						//根据文件建设对象经纬度数组
+						for (var i = 0; i < points.length; i++) {
+							var arr = points[i].split(',');
+							var obj = {
+								longitude: arr[0],
+								latitude: arr[1]
+							}
+							that.points.push(obj);
+						}
+						var obj = {
+							points: that.points,
+							color: "#4BDD25",
+							arrowLine: true,
+							width: 5
+						};
+						that.polyline.push(obj);
+					},
+					fail: function(res) {
+						console.log(res);
+					}
+				});
+			},
+			formatEstimateDistance: function(estimateDistance) {
+				//公里数
+				return estimateDistance + '公里';
+			},
+			formatEstimateTime: function(estimateTime) {
+				//格式化时间
+				let time = (estimateTime / 60) > 1 ? ((estimateTime / 60) + '小时') : (estimateTime + '分钟');
+				return time
+			},
+			packAddress:function(value){
+				//组装地址
+				var country = value.country=='undefined'?'': value.country;//国家
+				var province = value.country=='undefined'?'': value.province;//省份
+				var city = value.country=='undefined'?'': value.city;//城市
+				var district = value.country=='undefined'?'': value.district;//区
+				var street = value.country=='undefined'?'': value.street;//街道
+				var streetNum = value.country=='undefined'?'': value.streetNum;//门牌
+				var poiName = value.country=='undefined'?'': value.poiName;//POI
+				return country + province + city + district + street + streetNum + poiName;
+			},
+			//计算等待时间
+			mathWaitTime:function(startTime){
+				let that = this;
+			    var initialSec = new Date().getTime() - startTime.getTime(); 
+				that.initialMin = parseInt(initialSec / 1000 / 60) ;
+				that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟'); 
+				that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
+				clearInterval(that.waitTimeInterval);
+				that.waitTimeInterval = setInterval(function(){
+					that.initialMin = that.initialMin + 1;
+					that.waitTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟');
+					that.alreadyTime = (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟')
+					//						that.waitTime = that.initialMin / 60 > 0 ? (parseInt(that.initialMin/60) + '小时') + (that.initialMin % 60 + '分钟') : that.initialMin + '分钟'
+				},60000);
+				console.log('打开定时器：' + that.waitTimeInterval);
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.map {
+		width: 750rpx;
+	}
+
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+</style>

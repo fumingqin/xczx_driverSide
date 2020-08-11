@@ -1,0 +1,26 @@
+
+page {
+	background-color: #F5F9FC;
+}
+.inputClass {
+	width: 170rpx;
+	height: 40rpx;
+	font-size: 32rpx;
+	font-family: Source Han Sans SC;
+	font-weight: 400;
+	color: rgba(51, 51, 51, 1);
+	line-height: 36rpx;
+	position: absolute;
+	text-align: right;
+	right: 105rpx;
+}
+.textClass {
+	width: 30rpx;
+	height: 40rpx;
+	font-size: 32rpx;
+	font-weight: 400;
+	color: rgba(233, 85, 78, 1);
+	position: absolute;
+	right: 65rpx;
+}
+

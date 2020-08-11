@@ -1,0 +1,8 @@
+{
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "订单",
+  "navigationBarBackgroundColor": "#F6F8FE",
+  "usingComponents": {
+    "uni-transition": "/components/uni-transition/uni-transition"
+  }
+}

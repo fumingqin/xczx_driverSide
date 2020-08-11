@@ -1,0 +1,402 @@
+<template>
+	<view>
+		<map id="map1" ref="map1" class="map" :style="{height:mapHeight}" :scale="scale" :longitude="longitude" :latitude="latitude"
+		 :polyline="polyline" :markers="markers" :show-location="true">
+		</map>
+		<image @click="back" src="../../static/driver/back1.png" style="width: 120rpx;height: 120rpx;position: fixed;top: 50px;left: 1px;"></image>
+		<view v-if="status === 0" style="position: fixed;bottom: 220rpx; ">
+			<view style="display: flex;flex-direction: row;">
+				<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+				<image @click="change(status)" src="../../static/bcDriver/change.png" style="width: 120rpx;height: 120rpx; margin-left: 480rpx;"></image>
+			</view>
+			<!-- 行程信息 -->
+			<view style="width: 698rpx;height: 170rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
+				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateMileage}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">预计时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateHour}}</text>
+				</view>
+				<!-- <view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">等待时长:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{waitHour}}</text>
+				</view> -->
+				<view style="margin-top: 20rpx;margin-left: 36rpx;display: flex;flex-direction: row;">
+					<text style="width:110rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">上车点:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{beginAddress}}</text>
+				</view>
+			</view>
+			<!-- 联系电话 -->
+			<view style="width: 698rpx;height: 105rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; padding: 34rpx;display: flex;flex-direction: row;margin-top: 20rpx;">
+				<view>
+					<text style="width:140rpx;height:36rpx;font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(51,51,51,1);line-height:36rpx; margin-left: 10rpx;">乘客电话:</text>
+				</view>
+				<view>
+					<text style="width:200rpx;height:36rpx;font-size:30rpx;font-family:Source Han Sans SC;font-weight:300;color:rgba(51,51,51,1);line-height:36rpx;">{{passengerPhone}}</text>
+				</view>
+				<image style="width: 60rpx;height: 60rpx; left: 220rpx; top: -12rpx;" src="../../static/driver/phone.png" @click="call"></image>
+			</view>
+			<view>
+				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
+				 @longpress="confirmgetonCar">
+					<text style="color: #FFFFFF;">长按到达上车点</text>
+				</button>
+			</view>
+		</view>
+		<view v-if="status === 1" style="position: fixed;bottom: 220rpx; ">
+			<image src="../../static/driver/police.png" style="width: 120rpx;height: 120rpx;margin-left: 10rpx;" @click="callPolice"></image>
+			<!-- 行程信息 -->
+			<view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx;">
+				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">预计里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateMileage}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">预计时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{estimateHour}}</text>
+				</view>
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">目的地:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{endAddress}}</text>
+				</view>
+			</view>
+			<!-- <view style="width: 698rpx;height: 164rpx; background-color: #FFFFFF;margin-left: 28rpx; border-radius:20rpx; margin-top: 30rpx;">
+				<view style="margin-top: 36rpx;margin-left: 38rpx;display: flex;flex-direction: row;">
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">已驶里程:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyMileage}}</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx; margin-left: 40rpx;">已驶时长:</text>
+					<text style="width:140rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{alreadyHour}}</text>
+				</view>
+				<view style="margin-top: 20rpx;margin-left: 40rpx;display: flex;flex-direction: row;">
+					<text style="width:120rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">总费用:</text>
+					<text style="width:400rpx;height:40rpx;font-size:30rpx;font-family:Source Han Sans SC;color:#666666;line-height:36rpx;">{{totalCost}}元</text>
+				</view>
+			</view>
+ -->
+			<view>
+				<button style="width: 698rpx;height: 105rpx;background-color: #FC6A6C;border-color:#FC6A6C;margin-left: 28rpx; border-radius:20rpx; position: fixed; padding: 6rpx;bottom: 90rpx;"
+				 @longpress="confirmgettoDestination">
+					<text style="color: #FFFFFF;">长按到达目的地</text>
+				</button>
+			</view>
+		</view>
+
+		<!--弹出层-->
+		<uni-popup ref='chooseStart' :animation='true' type='center' :maskClick='false'>
+			<!--修改上车点-->
+			<view class="popupBlock" style="margin: 0 auto;">
+				<view class="popupTitle">
+					<view style="width: 72rpx;"></view>
+					<text class="popupTitleFont">请选择上车点</text>
+					<uni-icons @click="close('chooseStart')" color='#999999' size='24' type='closeempty'></uni-icons>
+				</view>
+				<view>
+					<button class="popupButtonChoose" @click="choosemap">
+						<text class="popupButtonChooseFont">{{startPoint}}</text>
+						<uni-icons color='#999999' size='24' type='forward'></uni-icons>
+					</button>
+					<button class="popupButtonOk" @click="Modify('start','chooseStart')">
+						<text class="popupButtonOkFont">确定</text>
+					</button>
+				</view>
+			</view>
+		</uni-popup>
+
+	</view>
+</template>
+
+<script>
+	import taxi from '../../common/Czc.js';
+	import uniIcons from "@/components/uni-icons/uni-icons.vue";
+	import Map from '../../common/my-openMap/openMap.js';
+	export default {
+		components: {
+			uniIcons,
+		},
+		data() {
+			return {
+				scale: 14,
+				longitude: "118.600608", //地图中心点经度
+				latitude: "24.889217", //地图中心点纬度
+				points: [],
+				polyline: [],
+				markers: [],
+				mapHeight: '',
+				viewHeight: '',
+				estimateMileage: '44 km',
+				estimateHour: '2小时',
+				beginAddress: '茶叶大厦',
+				endAddress: '晋江机场',
+				passengerPhone: '15255066261',
+				resultData: {},
+				status: 0,
+				directionInterval: '',
+				startPoint: "点击修改上车点",
+			}
+		},
+		onLoad() {
+			var that = this;
+			that.setMarker(1, 118.600608, 24.889217, '../../static/driver/Start.png');
+			that.setMarker(2, 118.613688, 24.912702, '../../static/driver/End.png');
+			that.getDirectionDriving(that.longitude + ',' + that.latitude, '118.613688,24.912702');
+			uni.getSystemInfo({
+				//设置地图高度为可使用的高度
+				success: function(res) {
+					that.mapHeight = res.windowHeight + 'px';
+					that.viewHeight = (res.windowHeight * 0.4) + 'px'
+				}
+			});
+			that.getOrderDetail();
+		},
+		onShow() {
+			var that = this;
+			uni.getStorage({
+				key: "AddressData",
+				success: function(res) {
+					console.log(res);
+					that.startPoint = res.data.addressName;
+					that.AddressArr = res.date;
+				}
+			})
+		},
+		methods: {
+		
+			getOrderDetail:function(){
+				let that = this;
+				that.status = 0;
+				
+				//刚接单
+				if(that.status == 0){
+					Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+					
+				}
+			},
+			choosemap() { //选择地点
+				uni.navigateTo({
+					url: '../Map/MapIndex'
+				})
+			},
+			Modify(type, name) { //点击确认修改地点
+				var that = this;
+				if (type == "start"&&that.startPoint!="点击修改上车点") { //修改上车点，确认方法
+					that.beginAddress = that.startPoint;
+				} 
+				this.close(name);
+			},
+			confirmgetonCar() { //确认乘客上车
+				this.status = 1;
+				var that = this;
+				that.markers = [];
+				that.polyline = [];
+				that.setMarker(1, 118.613688, 24.912702, '../../static/driver/Start.png');
+				that.setMarker(2, 118.611339, 24.885683, '../../static/driver/End.png');
+				that.getDirectionDriving('118.613688, 24.912702', '118.611339, 24.885683');
+				that.directionInterval = setInterval(function() { //获取司机的实时位置并规划到终点的路线
+					that.markers = [];
+					that.polyline = [];
+					uni.getLocation({
+						type: 'gcj02',
+						success: function(res) {
+							that.longitude = res.longitude;
+							that.latitude = res.latitude;
+						}
+					})
+					that.setMarker(1, that.longitude, that.latitude, '../../static/driver/Start.png');
+					that.setMarker(2, 118.611339, 24.885683, '../../static/driver/End.png');
+					that.getDirectionDriving(that.longitude + ',' + that.latitude, '118.611339, 24.885683');
+				}, 10000);
+				Map.openMap(24.943068, 118.609035, '清源山', 'gcj02');
+			},
+			confirmgettoDestination:function() {
+				//取消由 setInterval 设置的定时器
+				clearInterval(this.directionInterval);
+				uni.redirectTo({
+					url: '/pages/BCDriver/otherExpenses',
+				})
+			},
+			call: function() {
+				//呼叫乘客
+				let that = this;
+				uni.makePhoneCall({
+					phoneNumber: that.passengerPhone
+				});
+			},
+			//一键报警
+			callPolice: function() {
+				//一键报警
+				let that = this;
+				uni.showToast({
+					title: 'callPolice'
+				});
+				uni.getLocation({
+					type: 'gcj02',
+					geocode: true,
+					success: function(res) {
+						console.log(res.address);
+						console.log(res.latitude);
+						console.log(res.longitude);
+					}
+				});
+			},
+			back: function() {
+				var that = this;
+				uni.navigateBack({});
+			},
+			setMarker: function(id, lon, lat, iconPath) {
+				var width = 20;
+				var height = 20;
+				//描绘点的方法
+				var that = this;
+				var marker = new Object();
+				//画终点经纬度
+				marker = {
+					id: id,
+					latitude: lat,
+					longitude: lon,
+					iconPath: iconPath,
+					width: width,
+					height: height
+				};
+				that.markers.push(marker);
+			},
+			getDirectionDriving: function(startLonLat, endLonLat) {
+				//调用高德api取得路径规划并绘制线路 
+				var that = this;
+				uni.request({
+					url: taxi.InterfaceAddress[0],
+					data: {
+						startLonLat: startLonLat,
+						endLonLat: endLonLat,
+					},
+					method: "GET",
+					success: function(res) {
+						//日后会加入定时，此处需清空
+						that.points = [];
+						that.polyline = [];
+
+						var polylineArr = [];
+						var points = [];
+
+						polylineArr = res.data.Polyline;
+
+						for (var i = 0; i < polylineArr.length; i++) {
+							var arr = polylineArr[i].split(';');
+							for (var j = 0; j < arr.length; j++) {
+								points.push(arr[j]);
+							}
+						}
+						//根据文件建设对象经纬度数组
+						for (var i = 0; i < points.length; i++) {
+							var arr = points[i].split(',');
+							var obj = {
+								longitude: arr[0],
+								latitude: arr[1]
+							}
+							that.points.push(obj);
+						}
+						var obj = {
+							points: that.points,
+							color: "#4BDD25",
+							arrowLine: true,
+							width: 5
+						};
+						that.polyline.push(obj);
+					},
+					fail: function(res) {
+						console.log(res);
+					}
+				});
+			},
+
+			change: function(status) {
+				let that = this;
+				switch (status) {
+					case 0:
+						that.open('chooseStart');
+						break;
+						/* case 1:
+							that.open('chooseEnd');
+							break;
+						case 2:
+							that.open('chooseReturn');
+							break; */
+					default:
+						break;
+
+				}
+			},
+			open: function(name) {
+				let that = this;
+				that.$refs[name].open();
+			},
+			close: function(name) {
+				let that = this;
+				uni.removeStorage({
+					key: "AddressData",
+					success() {
+						that.startPoint = "点击修改上车点";
+					}
+				})
+				that.$refs[name].close();
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.map {
+		width: 750rpx;
+	}
+
+	.popupBlock {
+		width: 650rpx;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 12rpx;
+	}
+
+	.popupTitle {
+		margin-bottom: 50rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.popupTitleFont {
+		font-size: 38rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonChoose {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding: 30rpx;
+		background-color: #FFFFFF;
+		border-color: #AAAAAA;
+		border-width: 1rpx;
+		border-radius: 12rpx;
+	}
+
+	.popupButtonChooseFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.popupButtonOk {
+		margin-top: 50rpx;
+		padding: 30rpx;
+		background-color: #FC6A6C;
+		box-shadow: 0px 7px 38px 8px rgba(216, 48, 75, 0.15);
+		border-radius: 12rpx;
+	}
+
+	.popupButtonOkFont {
+		font-size: 36rpx;
+		font-family: Source Han Sans SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+</style>
