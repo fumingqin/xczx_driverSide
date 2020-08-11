@@ -44,7 +44,8 @@
 				current: 0,
 				items: ['燃油汽车', '新能源汽车'],
 				vehicleNumber: "",
-				vehicleTypeArr: ['客车', '出租车', '公交车', '包车', '旅游'],
+				/* vehicleTypeArr: ['客车', '出租车', '公交车', '包车', '旅游'], */
+				vehicleTypeArr: ['出租车'],
 				vehicleType: '',
 				selector: '请选择 >',
 			}
