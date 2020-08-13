@@ -1,5 +1,5 @@
 {
-    "name" : "综合出行司机端",
+    "name" : "乡村振兴司机端",
     "appid" : "__UNI__A074A31",
     "description" : "",
     "versionName" : "1.0.0",
@@ -66,8 +66,8 @@
                 "ad" : {},
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "d4e7aa47768fccb0cf8e6f806952cc81",
-                        "appkey_android" : "5409c9a27f3efaf2e811c82bc7c46500"
+                        "appkey_ios" : "7d0276a25b4a16a41904a5b84f8a4c4d",
+                        "appkey_android" : "a5e8647538b4872d9d75e4f8dbadf357"
                     }
                 }
             },
